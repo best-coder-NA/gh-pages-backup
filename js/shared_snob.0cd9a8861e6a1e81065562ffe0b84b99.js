@@ -25,18 +25,20 @@ const compounds_per_year = DAILY_COMPOUNDS * 365
 
 const SNOB_ADDRESS = '0xC38f41A296A4493Ff429F1238e030924A1542e50';
 
-const TOKEN_NAMES = { 
-    "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7": "AVAX",
-    "0x60781C2586D68229fde47564546784ab3fACA982": "PNG",
-    "0xC38f41A296A4493Ff429F1238e030924A1542e50": "SNOB",
-    "0x39cf1BD5f15fb22eC3D9Ff86b0727aFc203427cc": "SUSHI",
-    "0xf20d962a6c8f70c731bd838a3a388D7d48fA6e15": "ETH",
-    "0xde3A24028580884448a5397872046a019649b084": "USDT",
-    "0xB3fe5374F67D7a22886A0eE082b2E2f9d2651651": "LINK",
-    "0x408d4cd0adb7cebd1f1a1c33a0ba2098e1295bab": "WBTC",
-    "0x095370AE41FF23798d96c1ADF7D58Ae6a2b05b18": "DAI",
-    "0xf39f9671906d8630812f9d9863bbef5d523c84ab": "UNI"
-  }
+const TOKEN_NAMES = {
+  "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7": "AVAX",
+  "0x60781C2586D68229fde47564546784ab3fACA982": "PNG",
+  "0xC38f41A296A4493Ff429F1238e030924A1542e50": "SNOB",
+  "0x39cf1BD5f15fb22eC3D9Ff86b0727aFc203427cc": "SUSHI",
+  "0xf20d962a6c8f70c731bd838a3a388D7d48fA6e15": "ETH",
+  "0xde3A24028580884448a5397872046a019649b084": "USDT",
+  "0xB3fe5374F67D7a22886A0eE082b2E2f9d2651651": "LINK",
+  "0x408d4cd0adb7cebd1f1a1c33a0ba2098e1295bab": "WBTC",
+  "0x99519acb025a0e0d44c3875a4bbf03af65933627": "YFI" ,
+  "0xf39f9671906d8630812f9d9863bbef5d523c84ab": "UNI",
+  "0xba7deebbfc5fa1100fb055a87773e1e99cd3507a": "DAI",
+  "0x8ce2dee54bb9921a2ae0a63dbb2df8ed88b91dd9": "AAVE"
+}
 
 const walletcopy = () => {
   let wc = document.getElementById('wallet-copy');
@@ -263,6 +265,7 @@ const gentop = async () => {
           $('#value-snob').append(`${(currentSNOBTokens / 1e18 + claimableSnowballs).toFixed(4)}`);
           $('#value-usd').append(`${((currentSNOBTokens / 1e18 + claimableSnowballs) * snobPrice).toFixed(2)}`);
           $('#wallet').append(`${(currentSNOBTokens / 1e18).toFixed(4)}`);
+          $('#track-portfolio').html(`<ion-icon name="arrow-redo-outline"></ion-icon> <a href='https://markr.io/#/wallet?address=${walletAddres}' target='_blank'>Track Your Portfolio</a>`);
           $('#governance-snob').append(`In Governance: ${(assetsDeposited.snowball / 1e18).toFixed(4)}`);
           if (claimableSnowballs > 0) {
             $('#pending').append(`<ion-icon name="time-outline"></ion-icon> Pending: ${(claimableSnowballs).toFixed(4)}`);
@@ -349,26 +352,10 @@ const layoutpool = (options, replace) => {
                     <a href="${options.url}" target="_blank"><h6 class="pl-10 m-0">${options.pool_name}</h6></a>
                 </div>
             </div>
-            ${tvl}
-            ${apy}
-            <div class="col-sm-12 col-md-12 d-flex align-items-center mx-auto">
-                <div class="form-inline w-50 mx-auto">
-                    <div class="form-group m-md-0">
-                        <p class="m-0 font-size-12 font-weight-light">Daily:</p>
-                        <p class="m-0 font-size-12 font-weight-light">Weekly:</p>
-                        <p class="m-0 font-size-12 font-weight-light">Yearly:</p>
-                    </div>
-                </div>
-                <div class="form-inline w-50 mx-auto">
-                    <div class="form-group m-md-0">
-                    <p class="m-0 font-size-12 font-weight-semi-bold" id="${options.pool_id}-apr-daily"></p>
-                    <p class="m-0 font-size-12 font-weight-semi-bold" id="${options.pool_id}-apr-weekly"></p>
-                    <p class="m-0 font-size-12 font-weight-semi-bold" id="${options.pool_id}-apr-yearly"></p>
-                    </div>
-                </div>
-            </div>
             ${poolSize}
-
+            <div class="col-sm-12 col-md-12 align-items-center text-center snob-tvl mt-10 mb-0 mx-auto">
+                <a href="https://markr.io/#/applications/Snowball" target="_blank" class="btn btn-primary btn-sm"><ion-icon name="calculator"></ion-icon> Check APRs and TVL on Markr.io</a>
+            </div>
             <div class="col-sm-12 col-md-12 align-items-center text-center snob-tvl mt-10 mb-10 mx-auto">
                 <a href="${options.url}" target="_blank" class="btn btn-primary btn-sm"><ion-icon name="link-outline"></ion-icon> Get LP tokens</a>
             </div>
@@ -385,24 +372,6 @@ const layoutpool = (options, replace) => {
                       <img class="rounded-circle" width="48" src="${options.logo_token1}" alt="${options.pool_name}">
                       <img class="rounded-circle" width="48" src="${options.logo_token2}" alt="${options.pool_name}">
                       <a href="${options.url}" target="_blank"><h6 class="pl-10 m-0">${options.pool_name}</h6></a>
-                  </div>
-              </div>
-              ${tvl}
-              ${apy}
-              <div class="col-sm-12 col-md-12 d-flex align-items-center mx-auto">
-                  <div class="form-inline w-50 mx-auto">
-                      <div class="form-group m-md-0">
-                          <p class="m-0 font-size-12 font-weight-light">Daily:</p>
-                          <p class="m-0 font-size-12 font-weight-light">Weekly:</p>
-                          <p class="m-0 font-size-12 font-weight-light">Yearly:</p>
-                      </div>
-                  </div>
-                  <div class="form-inline w-50 mx-auto">
-                      <div class="form-group m-md-0">
-                      <p class="m-0 font-size-12 font-weight-semi-bold" id="${options.pool_id}-apr-daily"></p>
-                      <p class="m-0 font-size-12 font-weight-semi-bold" id="${options.pool_id}-apr-weekly"></p>
-                      <p class="m-0 font-size-12 font-weight-semi-bold" id="${options.pool_id}-apr-yearly"></p>
-                      </div>
                   </div>
               </div>
               ${poolSize}
@@ -449,7 +418,7 @@ const genpool = async (pool) => {
   const spglDisplayAmt = currentSPGLTokens > 1000 ? (currentSPGLTokens / 1e18).toFixed(8) : 0;
   
   let pair_tvl = 0;
-  let pair_tvl_display = 0;
+  let pair_tvl_display = '';
   
   // window.tvl.pairs.forEach( p => {
   //   if ( pairmatch(p, pool.token0.toLowerCase(), pool.token1.toLowerCase()) ) {
@@ -508,7 +477,7 @@ const genpool = async (pool) => {
     approve: `snowglobe('approve', '${pool.pair}', '${pool.snowglobe}')`,
     stake: `snowglobe('stake','${pool.pair}', '${pool.snowglobe}')`,
     withdraw: `snowglobe('withdraw', '${pool.pair}', '${pool.snowglobe}')`,
-    tvl_display: '',
+    tvl_display: pair_tvl_display,
     pool_share_display: null,
     stake_display: stakeDisplay,
     total_pgl: null,
